@@ -3,7 +3,10 @@ package android.flzcoolweather.com.coolweather.util;
 import android.flzcoolweather.com.coolweather.db.City;
 import android.flzcoolweather.com.coolweather.db.County;
 import android.flzcoolweather.com.coolweather.db.Province;
+import android.flzcoolweather.com.coolweather.gson.Weather;
 import android.text.TextUtils;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -79,5 +82,17 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
